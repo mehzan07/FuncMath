@@ -13,7 +13,6 @@ using System.Xml.Linq;
 
 namespace FuncMath
 {
-    // change the calls name and function attribute to Multipe and change the code to calculate multiplation of 2 numbers
     public static class Multiple
     {
         [FunctionName("Multiple")]
@@ -28,8 +27,6 @@ namespace FuncMath
             int y = Convert.ToInt32(req.Query["y"]);
 
             var multiple = x * y;
-            string t = multiple.ToString();
-
             string responseMessage = string.Empty;
 
             if (x == 0 && y == 0)
