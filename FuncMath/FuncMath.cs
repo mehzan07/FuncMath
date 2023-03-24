@@ -7,33 +7,43 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Azure.WebJobs.Host;
+using Newtonsoft.Json.Linq;
+using System.Xml.Linq;
 
 namespace FuncMath
 {
-    public static class FuncMath
+    // change the calls name and function attribute to Multipe and change the code to calculate multiplation of 2 numbers
+    public static class Multiple
     {
-       [FunctionName("FuncMath")]
-        //  public static async Task<IActionResult> Run(
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        [FunctionName("Multiple")]
+        public static IActionResult Run(
+             [HttpTrigger(AuthorizationLevel.Function, "get",
+            Route = null)] HttpRequest req,
+             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-            
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-            
-            string responseMessage = string.IsNullOrEmpty(name)
-               ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            int x = Convert.ToInt32(req.Query["x"]);
+            int y = Convert.ToInt32(req.Query["y"]);
 
+            var multiple = x * y;
+            string t = multiple.ToString();
 
-            return new OkObjectResult(responseMessage);
-            
+            string responseMessage = string.Empty;
+
+            if (x == 0 && y == 0)
+            {
+                responseMessage = "This HTTP triggered function executed successfully. Pass x and y  in the query string for a personalized response.";
+                return new OkObjectResult(responseMessage);
+            }
+            else
+            {
+                responseMessage = "Result =" + multiple.ToString() + " This HTTP triggered function executed successfully.";
+                return new OkObjectResult(responseMessage);
+            }
         }
+
     }
-    }
+}
 
